@@ -33,7 +33,7 @@ export default async function MyPage() {
   });
 
   return (
-    <main className="min-h-screen container p-16 mx-auto">
+    <main className="container p-16 mx-auto">
       <h2 className="mb-8 text-3xl font-bold">マイページ</h2>
       <h3 className="mb-4 text-xl font-semibold">作成したクイズ</h3>
       {quizzes.length === 0 ? (

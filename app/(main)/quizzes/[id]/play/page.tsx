@@ -57,7 +57,7 @@ export default async function QuizPlayPage({
   });
 
   return (
-    <main className="min-h-screen container p-16 mx-auto">
+    <main className="container p-16 mx-auto">
       <h2 className="mb-8 text-3xl font-bold">{session.quiz.title}</h2>
       <PlayQuizCard
         currentQuestion={session.currentQuestion}

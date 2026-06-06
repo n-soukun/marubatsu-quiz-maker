@@ -50,7 +50,7 @@ export default async function NewQuiz() {
   }
 
   return (
-    <main className="min-h-screen container p-16 mx-auto">
+    <main className="container p-16 mx-auto">
       <h2 className="mb-8 text-3xl font-bold">クイズ作成</h2>
       <QuizEditor saveAction={createQuiz} />
     </main>
