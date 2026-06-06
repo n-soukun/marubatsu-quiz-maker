@@ -17,7 +17,8 @@ export default async function QuizPlayPage({
   const { id: quizId } = await params;
 
   if (!sessionId) {
-    return await createQuizSession(quizId);
+    await createQuizSession(quizId);
+    return null;
   }
 
   const session = await prisma.quizSession.findUnique({
