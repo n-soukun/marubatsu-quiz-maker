@@ -23,8 +23,9 @@ model User {
   quizzes       Quiz[]
   scores        Score[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  quizSessions QuizSession[]
 }
 
 model Account {
@@ -76,8 +77,9 @@ model Quiz {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  questions Question[]
-  scores    Score[]
+  questions    Question[]
+  scores       Score[]
+  quizSessions QuizSession[]
 }
 
 model Question {
@@ -86,7 +88,7 @@ model Question {
   answer Boolean
 
   quizId String
-  quiz   Quiz   @relation(fields: [quizId], references: [id])
+  quiz   Quiz   @relation(fields: [quizId], references: [id], onDelete: Cascade)
   order  Int
 
   createdAt DateTime @default(now())
@@ -103,10 +105,24 @@ model Score {
   user   User   @relation(fields: [userId], references: [id])
 
   quizId String
-  quiz   Quiz   @relation(fields: [quizId], references: [id])
+  quiz   Quiz   @relation(fields: [quizId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@unique([userId, quizId])
+}
+
+model QuizSession {
+  id              String  @id @default(cuid())
+  quizId          String
+  quiz            Quiz    @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  userId          String?
+  user            User?   @relation(fields: [userId], references: [id])
+  currentQuestion Int
+  correctCount    Int
+  completed       Boolean
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
