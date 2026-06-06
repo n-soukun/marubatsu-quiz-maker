@@ -34,7 +34,7 @@ export default async function Home() {
     take: 6,
   });
   return (
-    <main className="min-h-screen container p-16 mx-auto">
+    <main className="container p-16 mx-auto">
       <h2 className="mb-8 text-3xl font-bold">新着クイズ</h2>
       {quizzes.length === 0 ? (
         <Empty className="border border-dashed">

@@ -7,8 +7,6 @@ import {
 } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import { auth } from "@/auth";
-import { Header } from "@/components/header";
 
 const playfairDisplayHeading = Playfair_Display({
   subsets: ["latin"],
@@ -37,15 +35,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth();
-
-  const user = session?.user
-    ? {
-        name: session.user.name || "",
-        image: session.user.image || "",
-      }
-    : undefined;
-
   return (
     <html
       lang="ja"
@@ -59,10 +48,7 @@ export default async function RootLayout({
         playfairDisplayHeading.variable,
       )}
     >
-      <body className="min-h-full flex flex-col">
-        <Header user={user} />
-        {children}
-      </body>
+      <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
 }
