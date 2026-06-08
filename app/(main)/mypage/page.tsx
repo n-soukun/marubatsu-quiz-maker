@@ -12,8 +12,8 @@ import {
 
 import { QuizCard } from "./quiz-card";
 import { CircleQuestionMarkIcon, PlusIcon } from "lucide-react";
-import Link from "next/link";
 import { redirect } from "next/navigation";
+import { NavigationLink } from "@/components/navigation";
 
 export const metadata = {
   title: "マイページ - マルバツクイズメーカー",
@@ -61,12 +61,12 @@ export default async function MyPage() {
               </EmptyDescription>
             </EmptyHeader>
             <EmptyContent>
-              <Link href="/quizzes/new" passHref>
+              <NavigationLink href="/quizzes/new" passHref>
                 <Button>
                   <PlusIcon />
                   クイズ作成
                 </Button>
-              </Link>
+              </NavigationLink>
             </EmptyContent>
           </Empty>
         ) : (

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -13,8 +12,8 @@ import { Button } from "@/components/ui/button";
 import { CircleIcon, XIcon } from "lucide-react";
 
 import { submitAnswer } from "./submit-answer";
-import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
+import { useNavigationRouter } from "@/components/navigation";
 
 export interface PlayQuizCardProps {
   currentQuestion: number;
@@ -29,7 +28,7 @@ export function PlayQuizCard(props: PlayQuizCardProps) {
   const [completed, setCompleted] = useState(false);
   const [correctAnswer, setCorrectAnswer] = useState(false);
 
-  const router = useRouter();
+  const router = useNavigationRouter();
 
   async function handleAnswer(answer: boolean) {
     if (showAnswer) {

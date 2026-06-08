@@ -22,7 +22,7 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import { prisma } from "@/lib/prisma";
-import Link from "next/link";
+import { NavigationLink } from "@/components/navigation";
 
 export const metadata = {
   title: "ホーム - マルバツクイズメーカー",
@@ -56,12 +56,12 @@ export default async function Home() {
             </EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
-            <Link href="/quizzes/new" passHref>
+            <NavigationLink href="/quizzes/new" passHref>
               <Button>
                 <PlusIcon />
                 クイズ作成
               </Button>
-            </Link>
+            </NavigationLink>
           </EmptyContent>
         </Empty>
       ) : (
@@ -88,17 +88,20 @@ export default async function Home() {
                 </CardDescription>
               </CardHeader>
               <CardFooter className=" flex gap-4">
-                <Link href={`/quizzes/${quiz.id}/play`} className=" flex-1">
+                <NavigationLink
+                  href={`/quizzes/${quiz.id}/play`}
+                  className=" flex-1"
+                >
                   <Button className="w-full" type="submit">
                     <PlayIcon />
                     プレイ
                   </Button>
-                </Link>
-                <Link href={`/quizzes/${quiz.id}`}>
+                </NavigationLink>
+                <NavigationLink href={`/quizzes/${quiz.id}`}>
                   <Button className=" shrink-0" variant="secondary" size="icon">
                     <InfoIcon />
                   </Button>
-                </Link>
+                </NavigationLink>
               </CardFooter>
             </Card>
           ))}

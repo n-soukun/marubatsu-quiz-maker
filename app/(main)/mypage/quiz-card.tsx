@@ -15,8 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { EllipsisVerticalIcon, PlayIcon } from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { NavigationLink, useNavigationRouter } from "@/components/navigation";
 
 import { deleteQuiz } from "./delete-quiz";
 
@@ -29,7 +28,7 @@ export interface QuizCardProps {
 }
 
 export function QuizCard(props: QuizCardProps) {
-  const router = useRouter();
+  const router = useNavigationRouter();
 
   function handleDelete() {
     deleteQuiz(props.quiz.id);
@@ -44,11 +43,15 @@ export function QuizCard(props: QuizCardProps) {
           最終更新日: {props.quiz.updatedAt.toLocaleDateString()}
         </CardDescription>
         <CardAction>
-          <Link href={`/quizzes/${props.quiz.id}`} passHref className="mr-2">
+          <NavigationLink
+            href={`/quizzes/${props.quiz.id}`}
+            passHref
+            className="mr-2"
+          >
             <Button size="icon">
               <PlayIcon />
             </Button>
-          </Link>
+          </NavigationLink>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="icon">
@@ -56,9 +59,9 @@ export function QuizCard(props: QuizCardProps) {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <Link href={`/quizzes/${props.quiz.id}/edit`} passHref>
+              <NavigationLink href={`/quizzes/${props.quiz.id}/edit`} passHref>
                 <DropdownMenuItem>編集</DropdownMenuItem>
-              </Link>
+              </NavigationLink>
               <DropdownMenuItem variant="destructive" onSelect={handleDelete}>
                 削除
               </DropdownMenuItem>

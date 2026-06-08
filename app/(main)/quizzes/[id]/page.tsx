@@ -12,7 +12,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { PlayIcon, ShareIcon } from "lucide-react";
-import Link from "next/link";
+import { NavigationLink } from "@/components/navigation";
 
 export default async function QuizPage({
   params,
@@ -57,12 +57,12 @@ export default async function QuizPage({
           </CardAction>
         </CardHeader>
         <CardFooter>
-          <Link href={`/quizzes/${id}/play`} className="w-full">
+          <NavigationLink href={`/quizzes/${id}/play`} className="w-full">
             <Button className="w-full" type="submit">
               <PlayIcon />
               クイズをプレイ
             </Button>
-          </Link>
+          </NavigationLink>
         </CardFooter>
       </Card>
       <Card className="mt-4">

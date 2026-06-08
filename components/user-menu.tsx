@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { signOut } from "@/auth";
-import Link from "next/link";
+import { NavigationLink } from "./navigation";
 
 export interface UserMenuProps {
   user: {
@@ -33,12 +33,12 @@ export function UserMenu(props: UserMenuProps) {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <Link href="/mypage" passHref>
+        <NavigationLink href="/mypage" passHref>
           <DropdownMenuItem>
             <UserIcon />
             マイページ
           </DropdownMenuItem>
-        </Link>
+        </NavigationLink>
         <DropdownMenuSeparator />
         <form
           action={async () => {

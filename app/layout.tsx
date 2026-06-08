@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { NavigationProvider } from "@/components/navigation";
 
 const heading = Noto_Sans_JP({
   subsets: ["latin"],
@@ -32,9 +33,11 @@ export default async function RootLayout({
       )}
     >
       <body className="min-h-full bg-yellow-800">
-        <div className=" mx-auto min-h-screen max-w-lg w-full bg-[repeating-linear-gradient(-45deg,#efb100,#efb100_15px,#fcc800_15px,#fcc800_30px)]">
-          {children}
-        </div>
+        <NavigationProvider>
+          <div className=" mx-auto min-h-screen max-w-lg w-full bg-[repeating-linear-gradient(-45deg,#efb100,#efb100_15px,#fcc800_15px,#fcc800_30px)]">
+            {children}
+          </div>
+        </NavigationProvider>
       </body>
     </html>
   );

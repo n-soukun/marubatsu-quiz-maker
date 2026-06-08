@@ -1,17 +1,30 @@
-import { signIn } from "@/auth";
+"use client";
+
+import { useState } from "react";
+
+import { signIn } from "next-auth/react";
 import { Button } from "./ui/button";
+import { LoadingSpinner } from "./loading-spinner";
 
 export function SignInButton() {
+  const [isLoading, setIsLoading] = useState(false);
+
+  function handleLogin() {
+    setIsLoading(true);
+    signIn();
+  }
+
   return (
-    <form
-      action={async () => {
-        "use server";
-        await signIn();
-      }}
-    >
-      <Button variant="outline" type="submit">
+    <>
+      <Button
+        variant="outline"
+        type="submit"
+        disabled={isLoading}
+        onClick={handleLogin}
+      >
         ログイン
       </Button>
-    </form>
+      {isLoading ? <LoadingSpinner /> : null}
+    </>
   );
 }

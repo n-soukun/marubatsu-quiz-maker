@@ -11,8 +11,8 @@ import { Field, FieldLabel } from "@/components/ui/field";
 import { Progress } from "@/components/ui/progress";
 import { prisma } from "@/lib/prisma";
 import { RepeatIcon, ShareIcon } from "lucide-react";
-import Link from "next/link";
 import { redirect } from "next/navigation";
+import { NavigationLink } from "@/components/navigation";
 
 export default async function QuizResultPage({
   params,
@@ -107,18 +107,18 @@ export default async function QuizResultPage({
             <ShareIcon />
             結果をシェア
           </Button>
-          <Link href={`/quizzes/${quizId}/play`} className="w-full">
+          <NavigationLink href={`/quizzes/${quizId}/play`} className="w-full">
             <Button type="submit" variant="secondary" className="w-full">
               <RepeatIcon />
               もう一度プレイ
             </Button>
-          </Link>
+          </NavigationLink>
         </CardFooter>
       </Card>
       <div className="mt-8 text-center">
-        <Link href="/" passHref>
+        <NavigationLink href="/" passHref>
           <Button>トップへ戻る</Button>
-        </Link>
+        </NavigationLink>
       </div>
     </main>
   );

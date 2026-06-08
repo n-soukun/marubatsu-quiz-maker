@@ -11,7 +11,8 @@ import {
 } from "./question-input-card";
 import { Button } from "@/components/ui/button";
 import { PlusIcon, SaveIcon } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
+
+import { LoadingSpinner } from "@/components/loading-spinner";
 
 export interface QuizEditorProps {
   defaultValue?: {
@@ -42,6 +43,7 @@ export function QuizEditor({ defaultValue, saveAction }: QuizEditorProps) {
     title?: string;
     questions?: string;
   }>();
+  const [isSaving, setIsSaving] = useState(false);
 
   function handleChangeTitle(e: React.ChangeEvent<HTMLInputElement>) {
     setTitle(e.target.value);
@@ -98,6 +100,7 @@ export function QuizEditor({ defaultValue, saveAction }: QuizEditorProps) {
     if (!validate()) {
       return;
     }
+    setIsSaving(true);
     saveAction({
       title,
       questions: questions.map(({ text, answer }) => ({ text, answer })),
@@ -161,6 +164,7 @@ export function QuizEditor({ defaultValue, saveAction }: QuizEditorProps) {
           保存
         </Button>
       </div>
+      {isSaving && <LoadingSpinner />}
     </div>
   );
 }
