@@ -45,7 +45,7 @@ export default async function QuizPage({
   }
 
   return (
-    <main className="min-h-screen container p-16 mx-auto">
+    <main className="p-4 mx-auto">
       <Card>
         <CardHeader>
           <CardTitle>{quiz.title}</CardTitle>
@@ -65,7 +65,7 @@ export default async function QuizPage({
           </Link>
         </CardFooter>
       </Card>
-      <Card className="mt-8">
+      <Card className="mt-4">
         <CardHeader>
           <CardTitle>スコアランキング</CardTitle>
           <CardDescription>

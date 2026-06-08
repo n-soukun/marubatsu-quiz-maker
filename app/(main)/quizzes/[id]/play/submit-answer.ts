@@ -31,6 +31,7 @@ export async function submitAnswer(sessionId: string, answer: boolean) {
 
   const newScore = session.correctCount + (question.answer === answer ? 1 : 0);
   const isCorrect = question.answer === answer;
+  const correctAnswer = question.answer;
 
   const completed =
     session.currentQuestion + 1 >=
@@ -84,5 +85,6 @@ export async function submitAnswer(sessionId: string, answer: boolean) {
   return {
     isCorrect,
     completed,
+    correctAnswer,
   };
 }

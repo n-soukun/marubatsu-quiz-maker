@@ -3,6 +3,10 @@ import { QuizEditor } from "../editor";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
+export const metadata = {
+  title: "作成 - マルバツクイズメーカー",
+};
+
 export default async function NewQuiz() {
   const session = await auth();
 
@@ -50,8 +54,10 @@ export default async function NewQuiz() {
   }
 
   return (
-    <main className="container p-16 mx-auto">
-      <h2 className="mb-8 text-3xl font-bold">クイズ作成</h2>
+    <main>
+      <h2 className="mb-4 text-xl font-semibold text-center p-4 bg-white text-sky-600 rounded-b-lg">
+        クイズ作成
+      </h2>
       <QuizEditor saveAction={createQuiz} />
     </main>
   );

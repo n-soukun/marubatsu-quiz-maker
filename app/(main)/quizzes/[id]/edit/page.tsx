@@ -64,8 +64,10 @@ export default async function EditQuiz({ params }: EditQuizProps) {
   }
 
   return (
-    <main className="container p-16 mx-auto">
-      <h2 className="mb-8 text-3xl font-bold">クイズ編集</h2>
+    <main className="mx-auto">
+      <h2 className="mb-4 text-xl font-semibold text-center p-4 bg-white text-sky-600 rounded-b-lg">
+        クイズ編集
+      </h2>
       <QuizEditor defaultValue={defaultValue} saveAction={updateQuiz} />
     </main>
   );

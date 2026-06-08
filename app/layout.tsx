@@ -1,29 +1,14 @@
 import type { Metadata } from "next";
-import {
-  Geist,
-  Geist_Mono,
-  Noto_Sans,
-  Playfair_Display,
-} from "next/font/google";
+import { Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
-const playfairDisplayHeading = Playfair_Display({
+const heading = Noto_Sans_JP({
   subsets: ["latin"],
   variable: "--font-heading",
 });
 
-const notoSans = Noto_Sans({ subsets: ["latin"], variable: "--font-sans" });
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const notoSans = Noto_Sans_JP({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   title: "マルバツクイズメーカー",
@@ -41,14 +26,16 @@ export default async function RootLayout({
       className={cn(
         "h-full",
         "antialiased",
-        geistSans.variable,
-        geistMono.variable,
         "font-sans",
         notoSans.variable,
-        playfairDisplayHeading.variable,
+        heading.variable,
       )}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full bg-yellow-800">
+        <div className=" mx-auto min-h-screen max-w-lg w-full bg-[repeating-linear-gradient(-45deg,#efb100,#efb100_15px,#fcc800_15px,#fcc800_30px)]">
+          {children}
+        </div>
+      </body>
     </html>
   );
 }

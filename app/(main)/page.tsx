@@ -1,4 +1,9 @@
-import { PlayIcon, CircleQuestionMarkIcon, PlusIcon } from "lucide-react";
+import {
+  PlayIcon,
+  CircleQuestionMarkIcon,
+  PlusIcon,
+  InfoIcon,
+} from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -34,8 +39,11 @@ export default async function Home() {
     take: 6,
   });
   return (
-    <main className="container p-16 mx-auto">
-      <h2 className="mb-8 text-3xl font-bold">新着クイズ</h2>
+    <main className="px-4 py-8">
+      <h3 className="mb-4 flex items-center px-2 py-1 text-lg font-semibold bg-background rounded-full">
+        <div className=" bg-primary w-4 h-4 rounded-full mr-2"></div>
+        <span>新着クイズ</span>
+      </h3>
       {quizzes.length === 0 ? (
         <Empty className="border border-dashed">
           <EmptyHeader>
@@ -57,9 +65,9 @@ export default async function Home() {
           </EmptyContent>
         </Empty>
       ) : (
-        <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {quizzes.map((quiz, i) => (
-            <Card key={quiz.id}>
+        <div className="grid w-full grid-cols-1 gap-4">
+          {quizzes.map((quiz) => (
+            <Card key={quiz.id} size="sm">
               <CardHeader>
                 <CardTitle>{quiz.title}</CardTitle>
                 <CardDescription>
@@ -79,16 +87,16 @@ export default async function Home() {
                   </div>
                 </CardDescription>
               </CardHeader>
-              <CardFooter className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
-                <Link href={`/quizzes/${quiz.id}/play`} className="w-full">
+              <CardFooter className=" flex gap-4">
+                <Link href={`/quizzes/${quiz.id}/play`} className=" flex-1">
                   <Button className="w-full" type="submit">
                     <PlayIcon />
                     プレイ
                   </Button>
                 </Link>
-                <Link href={`/quizzes/${quiz.id}`} className="w-full">
-                  <Button className="w-full" variant="secondary">
-                    詳細を見る
+                <Link href={`/quizzes/${quiz.id}`}>
+                  <Button className=" shrink-0" variant="secondary" size="icon">
+                    <InfoIcon />
                   </Button>
                 </Link>
               </CardFooter>

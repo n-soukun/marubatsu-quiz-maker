@@ -13,6 +13,8 @@ import { Button } from "@/components/ui/button";
 import { CircleIcon, XIcon } from "lucide-react";
 
 import { submitAnswer } from "./submit-answer";
+import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
 
 export interface PlayQuizCardProps {
   currentQuestion: number;
@@ -25,6 +27,7 @@ export function PlayQuizCard(props: PlayQuizCardProps) {
   const [showAnswer, setShowAnswer] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const [completed, setCompleted] = useState(false);
+  const [correctAnswer, setCorrectAnswer] = useState(false);
 
   const router = useRouter();
 
@@ -32,12 +35,13 @@ export function PlayQuizCard(props: PlayQuizCardProps) {
     if (showAnswer) {
       return;
     }
-    const { isCorrect, completed } = await submitAnswer(
+    const { isCorrect, completed, correctAnswer } = await submitAnswer(
       props.sessionId,
       answer,
     );
     setIsCorrect(isCorrect);
     setCompleted(completed);
+    setCorrectAnswer(correctAnswer);
     setShowAnswer(true);
   }
 
@@ -56,18 +60,32 @@ export function PlayQuizCard(props: PlayQuizCardProps) {
       <CardContent>
         <p className="mb-4 text-lg">{props.questionText}</p>
         {showAnswer && (
-          <div className="flex items-center gap-2 text-xl">
-            {isCorrect ? (
-              <>
-                <CircleIcon className="text-green-500" />
-                正解
-              </>
-            ) : (
-              <>
-                <XIcon className="text-red-500" />
-                不正解
-              </>
-            )}
+          <div className="mt-4 bg-muted rounded p-4">
+            <div className="flex items-center gap-2 text-3xl justify-center">
+              {isCorrect ? (
+                <>
+                  <CircleIcon className="text-green-500" size={48} />
+                  正解
+                </>
+              ) : (
+                <>
+                  <XIcon className="text-red-500" size={48} />
+                  不正解
+                </>
+              )}
+            </div>
+            <div className=" mt-2 text-center">
+              答えは、
+              <span
+                className={cn(
+                  "font-bold",
+                  correctAnswer ? "text-green-500" : "text-red-500",
+                )}
+              >
+                {correctAnswer ? "マル" : "バツ"}
+              </span>
+              でした！
+            </div>
           </div>
         )}
       </CardContent>

@@ -71,53 +71,53 @@ export default async function QuizResultPage({
   }
 
   return (
-    <main className="container p-16 mx-auto">
-      <h2 className="mb-8 text-3xl font-bold">{session.quiz.title}</h2>
+    <main className="p-8">
+      <h2 className="mb-8 text-xl font-bold">{session.quiz.title}</h2>
       <Card>
         <CardHeader>
           <CardTitle>リザルト</CardTitle>
-          <CardContent>
-            <p
-              className={`my-4 text-center text-xl font-bold ${textColor} ${bgLightColor} p-4`}
-            >
-              {message}
-            </p>
-            <Field className="w-full mb-4">
-              <FieldLabel htmlFor="progress-upload">
-                <span>
-                  {session.correctCount} / {session.currentQuestion} 問正解
-                </span>
-                <span className="ml-auto">
-                  {Math.round(
-                    (session.correctCount / session.currentQuestion) * 100,
-                  )}
-                  %
-                </span>
-              </FieldLabel>
-              <Progress
-                indicatorClassName={bgColor}
-                className={`h-4 ${bgLightColor}`}
-                value={(session.correctCount / session.currentQuestion) * 100}
-              />
-            </Field>
-          </CardContent>
-          <CardFooter className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
-            <Button disabled>
-              <ShareIcon />
-              結果をシェア
-            </Button>
-            <Link href={`/quizzes/${quizId}/play`} className="w-full">
-              <Button type="submit" variant="secondary" className="w-full">
-                <RepeatIcon />
-                もう一度プレイ
-              </Button>
-            </Link>
-          </CardFooter>
         </CardHeader>
+        <CardContent>
+          <p
+            className={`mb-4 text-center text-xl font-bold ${textColor} ${bgLightColor} p-4 rounded-lg`}
+          >
+            {message}
+          </p>
+          <Field className="w-full mb-4">
+            <FieldLabel htmlFor="progress-upload">
+              <span>
+                {session.correctCount} / {session.currentQuestion} 問正解
+              </span>
+              <span className="ml-auto">
+                {Math.round(
+                  (session.correctCount / session.currentQuestion) * 100,
+                )}
+                %
+              </span>
+            </FieldLabel>
+            <Progress
+              indicatorClassName={bgColor}
+              className={`h-4 ${bgLightColor}`}
+              value={(session.correctCount / session.currentQuestion) * 100}
+            />
+          </Field>
+        </CardContent>
+        <CardFooter className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
+          <Button disabled>
+            <ShareIcon />
+            結果をシェア
+          </Button>
+          <Link href={`/quizzes/${quizId}/play`} className="w-full">
+            <Button type="submit" variant="secondary" className="w-full">
+              <RepeatIcon />
+              もう一度プレイ
+            </Button>
+          </Link>
+        </CardFooter>
       </Card>
       <div className="mt-8 text-center">
         <Link href="/" passHref>
-          <Button variant="link">トップへ戻る</Button>
+          <Button>トップへ戻る</Button>
         </Link>
       </div>
     </main>

@@ -9,7 +9,9 @@ export function SignInButton() {
         await signIn();
       }}
     >
-      <Button type="submit">ログイン</Button>
+      <Button variant="outline" type="submit">
+        ログイン
+      </Button>
     </form>
   );
 }

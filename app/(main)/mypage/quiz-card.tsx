@@ -37,7 +37,7 @@ export function QuizCard(props: QuizCardProps) {
   }
 
   return (
-    <Card>
+    <Card size="sm">
       <CardHeader>
         <CardTitle>{props.quiz.title || "タイトルなし"}</CardTitle>
         <CardDescription>
