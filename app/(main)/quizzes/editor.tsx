@@ -25,14 +25,15 @@ export interface QuizEditorProps {
   }) => void;
 }
 
+interface QuestionData {
+  id: string;
+  text: string;
+  answer: boolean;
+}
+
 export function QuizEditor({ defaultValue, saveAction }: QuizEditorProps) {
   const [title, setTitle] = useState(defaultValue?.title || "");
-  const [questions, setQuestions] = useState<
-    Omit<
-      QuestionInputCardProps,
-      "index" | "onChange" | "onDelete" | "onReorder" | "isLast"
-    >[]
-  >(
+  const [questions, setQuestions] = useState<QuestionData[]>(
     defaultValue?.questions.map((q) => ({
       id: crypto.randomUUID(),
       text: q.text,
@@ -46,20 +47,22 @@ export function QuizEditor({ defaultValue, saveAction }: QuizEditorProps) {
   const [isSaving, setIsSaving] = useState(false);
 
   function handleChangeTitle(e: React.ChangeEvent<HTMLInputElement>) {
-    setTitle(e.target.value);
-    validate();
+    const newTitle = e.target.value;
+    setTitle(newTitle);
+    validateTitle(newTitle);
   }
 
   function handleChangeQuestion(index: number, text: string, answer: boolean) {
     const newQuestions = [...questions];
     newQuestions[index] = { ...newQuestions[index], text, answer };
     setQuestions(newQuestions);
-    validate();
+    validateQuestions(newQuestions);
   }
 
   function handleDeleteQuestion(index: number) {
-    setQuestions((questions) => questions.filter((_, i) => i !== index));
-    validate();
+    const newQuestions = questions.filter((_, i) => i !== index);
+    setQuestions(newQuestions);
+    validateQuestions(newQuestions);
   }
 
   function handleReorderQuestion(from: number, to: number) {
@@ -71,22 +74,40 @@ export function QuizEditor({ defaultValue, saveAction }: QuizEditorProps) {
     });
   }
 
-  function validate() {
-    let valid = true;
-    const newErrors: { title?: string; questions?: string } = {};
+  function validateTitle(title: string) {
     if (!title.trim()) {
-      newErrors.title = "タイトルは必須です";
-      valid = false;
+      setErrors((errors) => ({
+        ...errors,
+        title: "タイトルは必須です",
+      }));
+      return false;
     }
+    setErrors((errors) => ({
+      ...errors,
+      title: undefined,
+    }));
+    return true;
+  }
+
+  function validateQuestions(questions: QuestionData[]) {
+    let valid = true;
+    let newQuestionError: string = "";
+
     if (questions.length === 0) {
-      newErrors.questions = "問題は1問以上必要です";
+      newQuestionError = "問題は1問以上必要です";
       valid = false;
     } else if (questions.some((q) => !q.text.trim())) {
-      newErrors.questions = "すべての問題文を入力してください";
+      newQuestionError = "すべての問題文を入力してください";
       valid = false;
     }
-    setErrors(newErrors);
+    setErrors((prev) => ({ ...prev, questions: newQuestionError }));
     return valid;
+  }
+
+  function validate() {
+    const isTitleValid = validateTitle(title);
+    const areQuestionsValid = validateQuestions(questions);
+    return isTitleValid && areQuestionsValid;
   }
 
   function addQuestion() {
@@ -112,7 +133,7 @@ export function QuizEditor({ defaultValue, saveAction }: QuizEditorProps) {
       <Field className="mb-6" data-invalid={!!errors?.title}>
         <FieldLabel htmlFor="quiz-title">タイトル</FieldLabel>
         <Input
-          area-invalid={!!errors?.title}
+          area-invalid={String(!!errors?.title)}
           id="quiz-title"
           type="text"
           placeholder="新しいクイズ"

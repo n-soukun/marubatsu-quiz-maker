@@ -18,7 +18,7 @@ import {
   ChevronUpIcon,
 } from "lucide-react";
 import { useState } from "react";
-import { Field, FieldLabel } from "@/components/ui/field";
+import { Field, FieldLabel, FieldError } from "@/components/ui/field";
 
 export interface QuestionInputCardProps {
   id: string;
@@ -43,6 +43,13 @@ export function QuestionInputCard({
 }: QuestionInputCardProps) {
   const [element, setElement] = useState<Element | null>(null);
   const { isDragging } = useSortable({ id, index, element });
+  const [isError, setIsError] = useState(false);
+
+  const handleChangeText = (text: string) => {
+    onChange(text, answer);
+    setIsError(text.trim() === "");
+  };
+
   return (
     <Card ref={setElement} className={isDragging ? "opacity-50" : ""} size="sm">
       <CardHeader>
@@ -71,14 +78,16 @@ export function QuestionInputCard({
         </CardAction>
       </CardHeader>
       <CardContent>
-        <Field>
+        <Field data-invalid={isError}>
           <FieldLabel>問題文</FieldLabel>
           <Input
+            area-invalid={isError.toString()}
             type="text"
             placeholder="問題文"
             value={text}
-            onChange={(e) => onChange(e.target.value, answer)}
+            onChange={(e) => handleChangeText(e.target.value)}
           />
+          {isError && <FieldError>問題文を入力してください</FieldError>}
         </Field>
         <Field className="mt-4">
           <FieldLabel>答え</FieldLabel>
