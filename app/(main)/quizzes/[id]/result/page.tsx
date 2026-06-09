@@ -7,6 +7,7 @@ import { prisma } from "@/lib/prisma";
 import { RepeatIcon, ShareIcon } from "lucide-react";
 import { redirect } from "next/navigation";
 import { NavigationLink } from "@/components/navigation";
+import { ShareButton } from "./share-button";
 
 export async function generateMetadata({
   params,
@@ -47,7 +48,15 @@ export default async function QuizResultPage({
       id: sessionId,
     },
     include: {
-      quiz: true,
+      quiz: {
+        include: {
+          _count: {
+            select: {
+              questions: true,
+            },
+          },
+        },
+      },
     },
   });
 
@@ -60,18 +69,20 @@ export default async function QuizResultPage({
     redirect("/quizzes/" + quizId);
   }
 
+  const questionCount = session.quiz._count.questions;
+
   let message: string;
   let bgColor: string;
   let bgLightColor: string;
-  if (session.correctCount === session.currentQuestion) {
+  if (session.correctCount === questionCount) {
     message = "パーフェクト！";
     bgColor = "bg-linear-to-r from-purple-500 to-purple-700";
     bgLightColor = "bg-purple-100";
-  } else if (session.correctCount >= session.currentQuestion * 0.75) {
+  } else if (session.correctCount >= questionCount * 0.75) {
     message = "素晴らしい！";
     bgColor = "bg-linear-to-r from-lime-500 to-lime-700";
     bgLightColor = "bg-lime-100";
-  } else if (session.correctCount >= session.currentQuestion * 0.5) {
+  } else if (session.correctCount >= questionCount * 0.5) {
     message = "いい感じですね！";
     bgColor = "bg-linear-to-r from-orange-500 to-orange-700";
     bgLightColor = "bg-orange-100";
@@ -80,6 +91,8 @@ export default async function QuizResultPage({
     bgColor = "bg-linear-to-r from-blue-500 to-blue-700";
     bgLightColor = "bg-blue-100";
   }
+
+  const shareUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/quizzes/${quizId}`;
 
   return (
     <main className="p-8">
@@ -94,27 +107,25 @@ export default async function QuizResultPage({
           <Field className="w-full mb-4">
             <FieldLabel htmlFor="progress-upload">
               <span>
-                {session.correctCount} / {session.currentQuestion} 問正解
+                {session.correctCount} / {questionCount} 問正解
               </span>
               <span className="ml-auto">
-                {Math.round(
-                  (session.correctCount / session.currentQuestion) * 100,
-                )}
-                %
+                {Math.round((session.correctCount / questionCount) * 100)}%
               </span>
             </FieldLabel>
             <Progress
               indicatorClassName={bgColor}
               className={`h-4 ${bgLightColor}`}
-              value={(session.correctCount / session.currentQuestion) * 100}
+              value={(session.correctCount / questionCount) * 100}
             />
           </Field>
         </CardContent>
         <CardFooter className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
-          <Button disabled>
-            <ShareIcon />
-            結果をシェア
-          </Button>
+          <ShareButton
+            title={session.quiz.title}
+            url={shareUrl}
+            score={session.correctCount}
+          />
           <NavigationLink href={`/quizzes/${quizId}/play`} className="w-full">
             <Button type="submit" variant="outline" className="w-full">
               <RepeatIcon />

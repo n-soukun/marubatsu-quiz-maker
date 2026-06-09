@@ -11,12 +11,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { CalendarIcon, PlayIcon, Share2Icon } from "lucide-react";
+import { CalendarIcon, PlayIcon } from "lucide-react";
 import { NavigationLink } from "@/components/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import dayjs from "dayjs";
 import "dayjs/locale/ja";
+
+import { ShareButton } from "./share-button";
 dayjs.locale("ja");
 
 export async function generateMetadata({
@@ -80,6 +82,8 @@ export default async function QuizPage({
     redirect("/");
   }
 
+  const shareUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/quizzes/${id}`;
+
   return (
     <main className="p-4 mx-auto">
       <Card size="sm">
@@ -111,9 +115,7 @@ export default async function QuizPage({
             </div>
           </CardDescription>
           <CardAction>
-            <Button variant="outline" size="icon-sm" disabled>
-              <Share2Icon />
-            </Button>
+            <ShareButton title={quiz.title} url={shareUrl} />
           </CardAction>
         </CardHeader>
         <CardFooter>

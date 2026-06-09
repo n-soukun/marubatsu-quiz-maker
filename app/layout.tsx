@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { Toaster } from "react-hot-toast";
 import { NavigationProvider } from "@/components/navigation";
 
 const heading = Noto_Sans_JP({
@@ -38,6 +39,7 @@ export default async function RootLayout({
             {children}
           </div>
         </NavigationProvider>
+        <Toaster position="bottom-center" />
       </body>
     </html>
   );
