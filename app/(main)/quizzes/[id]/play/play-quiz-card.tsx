@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -30,6 +30,15 @@ export function PlayQuizCard(props: PlayQuizCardProps) {
 
   const router = useNavigationRouter();
 
+  useEffect(() => {
+    return () => {
+      setShowAnswer(false);
+      setIsCorrect(false);
+      setCompleted(false);
+      setCorrectAnswer(false);
+    };
+  }, [props.currentQuestion]);
+
   async function handleAnswer(answer: boolean) {
     if (showAnswer) {
       return;
@@ -46,7 +55,6 @@ export function PlayQuizCard(props: PlayQuizCardProps) {
 
   async function handleNext() {
     router.refresh();
-    setShowAnswer(false);
   }
 
   return (
@@ -104,7 +112,7 @@ export function PlayQuizCard(props: PlayQuizCardProps) {
         <CardFooter className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
           <Button
             variant="outline"
-            className="w-full bg-green-500 hover:bg-green-400 text-white hover:text-white"
+            className="w-full bg-green-500 hover:bg-green-400 border-green-800 text-white hover:text-white"
             onClick={() => handleAnswer(true)}
           >
             <CircleIcon />
@@ -112,7 +120,7 @@ export function PlayQuizCard(props: PlayQuizCardProps) {
           </Button>
           <Button
             variant="outline"
-            className="w-full bg-red-500 hover:bg-red-400 text-white hover:text-white"
+            className="w-full bg-red-500 hover:bg-red-400 border-red-800 text-white hover:text-white"
             onClick={() => handleAnswer(false)}
           >
             <XIcon />

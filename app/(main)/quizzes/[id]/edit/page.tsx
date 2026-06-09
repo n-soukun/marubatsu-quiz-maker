@@ -9,6 +9,10 @@ type EditQuizProps = {
   }>;
 };
 
+export const metadata = {
+  title: "編集 - マルバツクイズメーカー",
+};
+
 export default async function EditQuiz({ params }: EditQuizProps) {
   const session = await auth();
 

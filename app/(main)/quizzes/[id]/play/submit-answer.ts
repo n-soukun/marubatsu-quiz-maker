@@ -46,7 +46,9 @@ export async function submitAnswer(sessionId: string, answer: boolean) {
       id: sessionId,
     },
     data: {
-      currentQuestion: session.currentQuestion + 1,
+      currentQuestion: !completed
+        ? session.currentQuestion + 1
+        : session.currentQuestion,
       correctCount: newScore,
       completed,
     },

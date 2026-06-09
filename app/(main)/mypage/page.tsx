@@ -30,6 +30,13 @@ export default async function MyPage() {
     where: {
       authorId: session?.user?.id,
     },
+    include: {
+      _count: {
+        select: {
+          quizSessions: true,
+        },
+      },
+    },
     orderBy: {
       createdAt: "desc",
     },

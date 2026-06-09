@@ -1,9 +1,8 @@
-import { PlusIcon } from "lucide-react";
 import { SignInButton } from "./signin-button";
-import { Button } from "./ui/button";
 import { UserMenu } from "./user-menu";
 import Image from "next/image";
 import { NavigationLink } from "./navigation";
+import { NewQuizButton } from "./new-quiz-button";
 
 export interface HeaderProps {
   user?: {
@@ -20,12 +19,7 @@ export function Header(props: HeaderProps) {
       </NavigationLink>
       {props.user ? (
         <div className="flex items-center gap-4">
-          <NavigationLink href="/quizzes/new" passHref>
-            <Button variant="outline">
-              <PlusIcon />
-              クイズ作成
-            </Button>
-          </NavigationLink>
+          <NewQuizButton />
           <UserMenu user={props.user} />
         </div>
       ) : (

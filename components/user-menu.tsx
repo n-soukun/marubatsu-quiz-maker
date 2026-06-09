@@ -1,3 +1,5 @@
+"use client";
+
 import { LogOutIcon, UserIcon } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -8,8 +10,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { signOut } from "@/auth";
+import { signOut } from "next-auth/react";
 import { NavigationLink } from "./navigation";
+import { useState } from "react";
+import { LoadingSpinner } from "./loading-spinner";
 
 export interface UserMenuProps {
   user: {
@@ -19,41 +23,42 @@ export interface UserMenuProps {
 }
 
 export function UserMenu(props: UserMenuProps) {
+  const [logoutLoading, setLogoutLoading] = useState(false);
+
+  function handleLogout() {
+    setLogoutLoading(true);
+    signOut();
+  }
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger>
-        <Avatar>
-          <AvatarImage src={props.user.image} />
-          <AvatarFallback>
-            {props.user.name
-              .split(" ")
-              .map((n) => n[0])
-              .join("")}
-          </AvatarFallback>
-        </Avatar>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <NavigationLink href="/mypage" passHref>
-          <DropdownMenuItem>
-            <UserIcon />
-            マイページ
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <Avatar>
+            <AvatarImage src={props.user.image} />
+            <AvatarFallback>
+              {props.user.name
+                .split(" ")
+                .map((n) => n[0])
+                .join("")}
+            </AvatarFallback>
+          </Avatar>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <NavigationLink href="/mypage" passHref>
+            <DropdownMenuItem>
+              <UserIcon />
+              マイページ
+            </DropdownMenuItem>
+          </NavigationLink>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem variant="destructive" onClick={handleLogout}>
+            <LogOutIcon />
+            ログアウト
           </DropdownMenuItem>
-        </NavigationLink>
-        <DropdownMenuSeparator />
-        <form
-          action={async () => {
-            "use server";
-            await signOut();
-          }}
-        >
-          <DropdownMenuItem variant="destructive" asChild>
-            <button type="submit" className="block w-full">
-              <LogOutIcon />
-              ログアウト
-            </button>
-          </DropdownMenuItem>
-        </form>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      {logoutLoading && <LoadingSpinner />}
+    </>
   );
 }

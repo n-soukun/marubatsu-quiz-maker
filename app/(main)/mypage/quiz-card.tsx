@@ -14,16 +14,29 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { EllipsisVerticalIcon, PlayIcon } from "lucide-react";
+import {
+  CalendarIcon,
+  Edit2Icon,
+  EllipsisVerticalIcon,
+  PlayIcon,
+  TrashIcon,
+} from "lucide-react";
 import { NavigationLink, useNavigationRouter } from "@/components/navigation";
 
 import { deleteQuiz } from "./delete-quiz";
+
+import dayjs from "dayjs";
+import "dayjs/locale/ja";
+dayjs.locale("ja");
 
 export interface QuizCardProps {
   quiz: {
     id: string;
     title: string;
     updatedAt: Date;
+    _count: {
+      quizSessions: number;
+    };
   };
 }
 
@@ -36,39 +49,47 @@ export function QuizCard(props: QuizCardProps) {
   }
 
   return (
-    <Card size="sm">
-      <CardHeader>
-        <CardTitle>{props.quiz.title || "タイトルなし"}</CardTitle>
-        <CardDescription>
-          最終更新日: {props.quiz.updatedAt.toLocaleDateString()}
-        </CardDescription>
-        <CardAction>
-          <NavigationLink
-            href={`/quizzes/${props.quiz.id}`}
-            passHref
-            className="mr-2"
-          >
-            <Button size="icon">
-              <PlayIcon />
-            </Button>
-          </NavigationLink>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon">
-                <EllipsisVerticalIcon />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <NavigationLink href={`/quizzes/${props.quiz.id}/edit`} passHref>
-                <DropdownMenuItem>編集</DropdownMenuItem>
-              </NavigationLink>
-              <DropdownMenuItem variant="destructive" onSelect={handleDelete}>
-                削除
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </CardAction>
-      </CardHeader>
-    </Card>
+    <NavigationLink href={`/quizzes/${props.quiz.id}`} passHref>
+      <Card size="sm">
+        <CardHeader>
+          <CardTitle>{props.quiz.title || "タイトルなし"}</CardTitle>
+          <CardDescription>
+            <div className="flex items-center">
+              <span className="flex items-center gap-1">
+                <PlayIcon size={16} /> {props.quiz._count.quizSessions} 回
+              </span>
+              <span className="ml-4 flex items-center gap-1">
+                <CalendarIcon size={16} />
+                {dayjs(props.quiz.updatedAt).format("YYYY年MM月DD日")}
+              </span>
+            </div>
+          </CardDescription>
+          <CardAction>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="icon">
+                  <EllipsisVerticalIcon />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <NavigationLink
+                  href={`/quizzes/${props.quiz.id}/edit`}
+                  passHref
+                >
+                  <DropdownMenuItem>
+                    <Edit2Icon />
+                    編集
+                  </DropdownMenuItem>
+                </NavigationLink>
+                <DropdownMenuItem variant="destructive" onSelect={handleDelete}>
+                  <TrashIcon />
+                  削除
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </CardAction>
+        </CardHeader>
+      </Card>
+    </NavigationLink>
   );
 }

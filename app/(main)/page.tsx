@@ -2,14 +2,13 @@ import {
   PlayIcon,
   CircleQuestionMarkIcon,
   PlusIcon,
-  InfoIcon,
+  CalendarIcon,
 } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -24,8 +23,12 @@ import {
 import { prisma } from "@/lib/prisma";
 import { NavigationLink } from "@/components/navigation";
 
+import dayjs from "dayjs";
+import "dayjs/locale/ja";
+dayjs.locale("ja");
+
 export const metadata = {
-  title: "ホーム - マルバツクイズメーカー",
+  title: "マルバツクイズメーカー",
 };
 
 export default async function Home() {
@@ -35,9 +38,15 @@ export default async function Home() {
     },
     include: {
       author: true,
+      _count: {
+        select: {
+          quizSessions: true,
+        },
+      },
     },
     take: 6,
   });
+
   return (
     <main className="px-4 py-8">
       <h3 className="mb-4 flex items-center px-2 py-1 text-lg font-semibold bg-background rounded-full">
@@ -67,43 +76,42 @@ export default async function Home() {
       ) : (
         <div className="grid w-full grid-cols-1 gap-4">
           {quizzes.map((quiz) => (
-            <Card key={quiz.id} size="sm">
-              <CardHeader>
-                <CardTitle>{quiz.title}</CardTitle>
-                <CardDescription>
-                  <div className="flex items-center gap-2">
-                    <Avatar size="sm">
-                      <AvatarImage src={quiz.author.image ?? ""} />
-                      <AvatarFallback>
-                        {quiz.author.name
-                          ? quiz.author.name
-                              .split(" ")
-                              .map((n) => n[0])
-                              .join("")
-                          : "U"}
-                      </AvatarFallback>
-                    </Avatar>
-                    {quiz.author?.name || "ユーザー"}
-                  </div>
-                </CardDescription>
-              </CardHeader>
-              <CardFooter className=" flex gap-4">
-                <NavigationLink
-                  href={`/quizzes/${quiz.id}/play`}
-                  className=" flex-1"
-                >
-                  <Button className="w-full" type="submit">
-                    <PlayIcon />
-                    プレイ
-                  </Button>
-                </NavigationLink>
-                <NavigationLink href={`/quizzes/${quiz.id}`}>
-                  <Button className=" shrink-0" variant="secondary" size="icon">
-                    <InfoIcon />
-                  </Button>
-                </NavigationLink>
-              </CardFooter>
-            </Card>
+            <NavigationLink
+              key={quiz.id}
+              href={`/quizzes/${quiz.id}`}
+              className="w-full"
+            >
+              <Card size="sm">
+                <CardHeader>
+                  <CardTitle>{quiz.title}</CardTitle>
+                  <CardDescription>
+                    <div className="flex items-center">
+                      <span className="flex items-center gap-1">
+                        <PlayIcon size={16} /> {quiz._count.quizSessions} 回
+                      </span>
+                      <span className="ml-4 flex items-center gap-1">
+                        <CalendarIcon size={16} />
+                        {dayjs(quiz.updatedAt).format("YYYY年MM月DD日")}
+                      </span>
+                    </div>
+                    <div className=" mt-2 flex items-center gap-2">
+                      <Avatar size="sm">
+                        <AvatarImage src={quiz.author.image ?? ""} />
+                        <AvatarFallback>
+                          {quiz.author.name
+                            ? quiz.author.name
+                                .split(" ")
+                                .map((n) => n[0])
+                                .join("")
+                            : "U"}
+                        </AvatarFallback>
+                      </Avatar>
+                      {quiz.author?.name || "ユーザー"}
+                    </div>
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            </NavigationLink>
           ))}
         </div>
       )}
